@@ -1,0 +1,34 @@
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.netflix.nebula:gradle-extra-configurations-plugin:3.0.3"
+  }
+}
+
+apply plugin: 'nebula.provided-base'
+apply plugin: '{{pluginType}}'
+
+group = '{{build.group}}'
+description = '{{build.description}}'
+
+{{build.packaging}} {
+  baseName = '{{build.artifact}}'
+  version = '{{build.version}}'
+}
+
+sourceCompatibility = {{build.javaVersion}}
+targetCompatibility = {{build.javaVersion}}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  {{#dependencies}}
+  {{scope}} group: '{{group}}', name: '{{artifact}}', version: '{{version}}'{{#type}}, ext: '{{type}}'{{/type}}{{#classifier}}, classifier: '{{classifier}}'{{/classifier}}
+  {{/dependencies}}
+}

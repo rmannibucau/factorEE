@@ -1,0 +1,26 @@
+= JavaEE Factory
+
+A JavaEE oriented project factory.
+
+= TODO
+
+- Logo
+- Theming
+- Github integration? (directly create the project on github instead of downloading a zip)
+- More facets (JSF, JPA, Servlet, Asynchronism, proprietary configuration files?...)
+- ...
+
+= Dev
+
+
+- Frontend: run
+
+[source]
+----
+mvn compile tomee-embedded:run
+----
+
+then develop in src/main/webapp
+
+- Backend: tests use a custom JUnit runner avoiding to have to restart/redeploying anything between test (see `com.github.rmannibucau.javaeefactory.test.JavaEEFactory.Runner`)
+and `com.github.rmannibucau.javaeefactory.jaxrs.ProjectFactoryResourceTest` for a sample)

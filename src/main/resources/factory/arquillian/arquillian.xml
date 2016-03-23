@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<arquillian>
+  <container qualifier="tomee" default="true">
+    <configuration>
+      <property name="httpsPort">-1</property>
+      <property name="httpPort">-1</property>
+      <property name="stopPort">-1</property>
+      <property name="ajpPort">-1</property>
+      <property name="cleanOnStartUp">true</property>
+      <property name="simpleLog">true</property>
+      <property name="dir">{{buildDir}}/tomee</property>
+      <property name="appWorkingDir">{{buildDir}}/arquillian-workdir</property>
+      <property name="properties">
+        # you can define a resource there if needed
+      </property>
+    </configuration>
+  </container>
+</arquillian>

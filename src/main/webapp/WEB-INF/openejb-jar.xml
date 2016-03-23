@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openejb-jar>
+  <pojo-deployment class-name="jaxrs-application">
+    <properties>
+      # avoid surprises even if ATM we shouldn't get any
+      cxf.jaxrs.skip-provider-scanning = true
+      cxf.jaxrs.providers = org.apache.johnzon.jaxrs.JohnzonProvider
+    </properties>
+  </pojo-deployment>
+</openejb-jar>

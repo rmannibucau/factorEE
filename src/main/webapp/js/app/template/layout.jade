@@ -1,0 +1,28 @@
+div(id="data-low-protection", style="margin-bottom:0;", role="alert", v-if="showDataProtectionLawMessage").text-center.alert.alert-info.text-info
+    span This website uses cookies for view statistics. No personal data are stored.
+    span.hspace &nbsp;
+    button(type="button", @click="acceptCookies()").btn.btn-primary.btn-sm Accept
+    span.hspace &nbsp;
+    button(type="button", @click="rejectCookies()").btn.btn-danger.btn-sm Hide
+nav(role="navigation").navbar.navbar-default
+    div.container
+        div.navbar-header
+            button(type="button", data-toggle="collapse", data-target=".navbar-ex1-collapse").navbar-toggle
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a(id="brandLink", v-link="{ path: '/home' }").navbar-brand JavaEE Factory
+
+div(id="main").container
+    div.container
+        router-view
+div.clearfix
+
+footer(id="footer").text-center.center-block
+    section
+        a(href="https://twitter.com/javaee_guardian", target="_blank")
+            i.fa.fa-twitter.fa-2x.social
+    section
+        p.txt-railway JavaEE Factory is an effort to promote JavaEE
+

@@ -1,7 +1,7 @@
 ({
     name: 'boot',
     baseUrl: '${project.build.directory}/frontend/js/app',
-    out: '${project.build.directory}/${project.build.finalName}/js/app/rblog.min.js',
+    out: '${project.build.directory}/${project.build.finalName}/js/app/javaeefactory.min.js',
     optimize: 'uglify',
     paths: {
         'Vue': '../../../../src/main/webapp/js/lib/vue/vue.min',

@@ -92,7 +92,7 @@
             'boostrapNotify': ['bootstrap', 'jquery']
         }
     });
-    define('main', ['jquery', 'bootstrap', 'rblog.min'], function () {
+    define('main', ['jquery', 'bootstrap', 'javaeefactory.min'], function () {
         require(['boot']);
     });
     require(['main']);

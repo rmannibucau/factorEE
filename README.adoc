@@ -22,5 +22,7 @@ mvn compile tomee-embedded:run
 
 then develop in src/main/webapp
 
+The website is deployed on http://localhost:8080/factorEE
+
 - Backend: tests use a custom JUnit runner avoiding to have to restart/redeploying anything between test (see `com.github.rmannibucau.javaeefactory.test.JavaEEFactory.Runner`)
 and `com.github.rmannibucau.javaeefactory.jaxrs.ProjectFactoryResourceTest` for a sample)

@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyMap;
+
 @ApplicationScoped
-public class JAXRSFacet implements FacetGenerator {
+public class OpenJPAFacet implements FacetGenerator,Versions {
     @Inject
     private TemplateRenderer tpl;
 
@@ -27,27 +29,33 @@ public class JAXRSFacet implements FacetGenerator {
         final Map<String, String> model = new HashMap<String, String>() {{
             put("package", packageBase);
         }};
-
-        final String base = build.getMainJavaDirectory() + '/' + packageBase.replace('.', '/');
         return Stream.of(
-                new InMemoryFile(base + "/jaxrs/ApplicationConfig.java", tpl.render("factory/jaxrs/ApplicationConfig.java", model)),
-                new InMemoryFile(base + "/jaxrs/HelloResource.java", tpl.render("factory/jaxrs/HelloResource.java", model)),
-                new InMemoryFile(base + "/jaxrs/Hello.java", tpl.render("factory/jaxrs/Hello.java", model))
+                new InMemoryFile(
+                        build.getMainJavaDirectory() + '/' + packageBase.replace('.', '/') + "/jpa/HelloEntity.java",
+                        tpl.render("factory/openjpa/HelloEntity.java", model)
+                ),
+                new InMemoryFile(
+                        build.getMainResourcesDirectory() + "/META-INF/persistence.xml",
+                        tpl.render("factory/openjpa/persistence.xml", emptyMap()))
         );
     }
 
     @Override
     public Stream<Dependency> dependencies(final Collection<String> facets) {
-        return Stream.of(Dependency.javaeeApi());
+        return Stream.of(
+                Dependency.javaeeApi(),
+                // adding openjpa to avoid compilation error on enhanced classes
+                new Dependency("org.apache.openjpa", "openjpa", OPENJPA, "provided")
+        );
     }
 
     @Override
     public String description() {
-        return "Generate a Hello World JAX-RS endpoint.";
+        return "OpenJPA as JPA provider";
     }
 
     @Override
     public String name() {
-        return "JAX-RS";
+        return "OpenJPA";
     }
 }

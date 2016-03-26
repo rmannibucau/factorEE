@@ -1,14 +1,10 @@
 package {{package}}.jaxrs;
 
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
-import java.net.URL;
-
 import org.apache.openejb.junit.ApplicationComposer;
 import org.apache.openejb.testing.Classes;
-import org.apache.openejb.testing.Default;
 import org.apache.openejb.testing.EnableServices;
 import org.apache.openejb.testing.RandomPort;
+import org.apache.openejb.testing.SimpleLog;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -18,9 +14,9 @@ import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 
-@Default
+@SimpleLog
 @EnableServices("jaxrs")
-@Classes(cdi = true, context = "app")
+@Classes(cdi = true, context = "app", value = {ApplicationConfig.class, HelloResource.class})
 @RunWith(ApplicationComposer.class)
 public class ApplicationComposerHelloResourceTest {
     @RandomPort("http")

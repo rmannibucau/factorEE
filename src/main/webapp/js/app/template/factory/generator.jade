@@ -26,7 +26,7 @@ form(@submit.prevent="zip").row.col-sm-12
             label(for="projectDescription") Description
             input(id="projectDescription", type="text", placeholder="Enter the project group...", required, v-model="project.description").form-control
         div.form-group
-            label(for="projectPackage") Base Package
+            label(for="projectPackage") Package
             input(id="projectPackage", type="text", placeholder="Enter the project group...", required, v-model="project.packageBase").form-control
         div.form-group(v-if="!view.light")
             label(for="projectPackaging") Packaging
@@ -53,4 +53,4 @@ form(@submit.prevent="zip").row.col-sm-12
                     i.fa.fa-times
             div.clearfix
     div.row
-        button(type="submit").btn.btn-lg.btn-primary.btn-block Create
+        button(type="submit").btn.btn-lg.btn-primary.btn-block.relief-button Create

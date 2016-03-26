@@ -53,7 +53,7 @@
     <link href="<%= root %>/js/lib/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
 </head>
 
-<body id="top">
+<body>
 
 <div id="content">
     <div class="center-block spinner-text">JavaEE Factory is loading...</div>

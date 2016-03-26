@@ -7,5 +7,8 @@ import com.github.rmannibucau.javaeefactory.service.domain.ProjectRequest;
 import java.util.Collection;
 
 public interface BuildGenerator {
-    Build createBuild(ProjectRequest.BuildConfiguration buildConfiguration, Collection<Dependency> dependencies);
+    Build createBuild(ProjectRequest.BuildConfiguration buildConfiguration,
+                      String packageBase,
+                      Collection<Dependency> dependencies,
+                      Collection<String> facets);
 }

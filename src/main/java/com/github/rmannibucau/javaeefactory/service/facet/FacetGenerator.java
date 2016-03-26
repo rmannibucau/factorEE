@@ -9,9 +9,18 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 public interface FacetGenerator {
-    Stream<InMemoryFile> create(String packageBase, Build build, Collection<String> facets);
-    Stream<Dependency> dependencies(Collection<String> facets);
     String description();
+
+    String name();
+
+    default Stream<InMemoryFile> create(final String packageBase, final Build build,
+                                        final Collection<String> facets) {
+        return Stream.empty();
+    }
+
+    default Stream<Dependency> dependencies(final Collection<String> facets) {
+        return Stream.empty();
+    }
 
     @Getter
     @RequiredArgsConstructor

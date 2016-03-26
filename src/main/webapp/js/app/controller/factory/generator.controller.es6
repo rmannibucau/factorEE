@@ -33,9 +33,7 @@ export default Vue.extend({
             FactoryService.getConfiguration(
                 configuration => {
                     this.$set('configuration', configuration);
-
-                    let facetNames = Object.keys(configuration.facets);
-                    this.facetPlaceholder = facetNames.join(', ');
+                    this.facetPlaceholder = Object.keys(configuration.facets).join(', ');
 
                     // set this once config is loaded to be able to match one option
                     this.project.buildType = 'Maven';
@@ -43,11 +41,16 @@ export default Vue.extend({
 
                     // completion
                     $('#projectFacetSearch').typeahead({
-                        source: facetNames,
+                        source: Object.keys(configuration.facets),
                         afterSelect: item => {
                             this.project.facets.push(item);
                             $('#projectFacetSearch').val('');
-                        }
+                        },
+                        highlighter: function (item) {
+                            var description = configuration.facets[item];
+                            var html = '<div><strong>' + item + '</strong><br/><small>' + description + '</small></div>';
+                            return html;
+                        },
                     });
                 },
                 error => notifier.error('Error', 'Can\'t retrieve factory configuration (HTTP ' + error.status + ').'));

@@ -17,8 +17,8 @@ public class GeneratorRegistration {
         return this;
     }
 
-    public GeneratorRegistration registerFacetType(final String facet, final FacetGenerator generator) {
-        facetGenerators.put(facet, generator);
+    public GeneratorRegistration registerFacetType(final FacetGenerator generator) {
+        facetGenerators.put(generator.name(), generator);
         return this;
     }
 }

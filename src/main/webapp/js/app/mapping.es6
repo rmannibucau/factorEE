@@ -7,7 +7,7 @@ var router = new VueRouter();
 router.map({
     '/': {
         component: LayoutController,
-        subRoutes: { // not that useful yet but if we have multiple later...
+        subRoutes: { // in case we have multiple pages
             '/': {component: FactoryController}
         }
     }

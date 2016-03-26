@@ -22,6 +22,10 @@ public class Dependency {
         this(group, artifact, version, scope, null, null);
     }
 
+    public Dependency(final Dependency source, final String newScope) {
+        this(source.getGroup(), source.getArtifact(), source.getVersion(), newScope, source.getType(), source.getClassifier());
+    }
+
     public static Dependency javaeeApi() {
         return JAVAEE_API;
     }

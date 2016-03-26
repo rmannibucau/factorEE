@@ -6,19 +6,46 @@ buildscript {
   }
   dependencies {
     classpath "com.netflix.nebula:gradle-extra-configurations-plugin:3.0.3"
+    {{#buildDependencies}}
+    classpath "{{this}}"
+    {{/buildDependencies}}
   }
 }
 
 apply plugin: 'nebula.provided-base'
-apply plugin: '{{pluginType}}'
+{{#plugins}}
+apply plugin: '{{this}}'
+{{/plugins}}
+
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
 
 group = '{{build.group}}'
 description = '{{build.description}}'
+{{#configurations}}{{#-first}}
+configurations { {{/-first}}
+    {{this}}{{#-last}}
+} {{/-last}}{{/configurations}}
 
 {{build.packaging}} {
   baseName = '{{build.artifact}}'
   version = '{{build.version}}'
 }
+{{#pluginConfigurations}}
+
+test {
+  testLogging.showStandardStreams = true
+}
+
+{{key}} {
+  {{#value}}
+  {{key}} {{value}}
+  {{/value}}
+}
+{{/pluginConfigurations}}
 
 sourceCompatibility = {{build.javaVersion}}
 targetCompatibility = {{build.javaVersion}}

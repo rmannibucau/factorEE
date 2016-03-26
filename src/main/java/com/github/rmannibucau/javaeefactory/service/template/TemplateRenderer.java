@@ -22,7 +22,7 @@ public class TemplateRenderer {
     public String render(final String template, final Object model) {
         return templates.computeIfAbsent(template, t -> {
             try (final InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(template)) {
-                return Mustache.compiler().compile(new String(io.read(is), StandardCharsets.UTF_8));
+                return Mustache.compiler().escapeHTML(false).compile(new String(io.read(is), StandardCharsets.UTF_8));
             } catch (final IOException e) {
                 throw new IllegalArgumentException(e);
             }

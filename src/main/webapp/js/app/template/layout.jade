@@ -4,15 +4,10 @@ div(id="data-low-protection", style="margin-bottom:0;", role="alert", v-if="show
     button(type="button", @click="acceptCookies()").btn.btn-primary.btn-sm Accept
     span.hspace &nbsp;
     button(type="button", @click="rejectCookies()").btn.btn-danger.btn-sm Hide
-nav(role="navigation").navbar.navbar-default
-    div.container
-        div.navbar-header
-            button(type="button", data-toggle="collapse", data-target=".navbar-ex1-collapse").navbar-toggle
-                span.sr-only Toggle navigation
-                span.icon-bar
-                span.icon-bar
-                span.icon-bar
-            a(id="brandLink", v-link="{ path: '/home' }").navbar-brand JavaEE Factory
+div(id="top").container-fluid
+    div(id="top-nav").container
+        h1(id="header-title") JavaEE Factory
+            small bootstrap your EE application
 
 div(id="main").container
     div.container
@@ -21,8 +16,13 @@ div.clearfix
 
 footer(id="footer").text-center.center-block
     section
-        a(href="https://twitter.com/javaee_guardian", target="_blank")
+        a(href="https://twitter.com/rmannibucau", target="_blank")
             i.fa.fa-twitter.fa-2x.social
     section
-        p.txt-railway JavaEE Factory is an effort to promote JavaEE
+        p.txt-railway
+            | JavaEE Factory is an effort to promote JavaEE powered by Blue Jeen and&nbsp;
+            a(href="https://twitter.com/rmannibucau", target="_blank") RMannibucau
+        p.txt-railway Special thanks to&nbsp;
+            a(href="https://start.spring.io/") Spring Initializr
+            | &nbsp;for the idea
 

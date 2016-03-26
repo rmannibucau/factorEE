@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @ApplicationScoped
 public class ProjectGenerator {
@@ -60,13 +62,10 @@ public class ProjectGenerator {
 
         // build dependencies to give them to the build
         final Collection<String> facets = ofNullable(request.getFacets()).orElse(emptyList());
-        final List<Dependency> dependencies = facets.stream()
+        final List<Dependency> dependencies = new ArrayList<>(facets.stream()
                 .map(this.facets::get)
                 .flatMap(f -> f.dependencies(facets))
-                .collect(toList());
-        if (dependencies.isEmpty()) { // always add javaee-api
-            dependencies.add(Dependency.javaeeApi());
-        }
+                .collect(toSet()));
         Collections.sort(dependencies, (o1, o2) -> {
             {// by scope
                 final int scope1 = scopesOrdering.indexOf(o1.getScope());
@@ -87,9 +86,12 @@ public class ProjectGenerator {
             // by name
             return o1.getArtifact().compareTo(o2.getArtifact());
         });
+        // force javaee-api and force it first
+        dependencies.remove(Dependency.javaeeApi());
+        dependencies.add(0, Dependency.javaeeApi());
 
         // create the build to be able to generate the files
-        final Build build = generator.createBuild(request.getBuildConfiguration(), dependencies);
+        final Build build = generator.createBuild(request.getBuildConfiguration(), request.getPackageBase(), dependencies, facets);
         files.put(build.getBuildFileName(), build.getBuildFileContent());
 
         // activate CDI

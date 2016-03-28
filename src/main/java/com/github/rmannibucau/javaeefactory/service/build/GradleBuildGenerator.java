@@ -69,7 +69,7 @@ public class GradleBuildGenerator implements BuildGenerator, Versions {
             if (facets.contains(applicationComposer.name())) {
                 // fake a scope to resolve the path of the javaagent programmatically
                 build.getConfigurations().add("javaagentOpenJPA");
-                build.getDependencies().add(new Dependency("org.apache.tomee", "openejb-javaagent", TOMEE, "javaagent"));
+                build.getDependencies().add(new Dependency("org.apache.tomee", "openejb-javaagent", TOMEE, "javaagentOpenJPA"));
 
                 // add the jaavagent computing the javaagent path
                 build.getPluginConfigurations().add( // doFirst to delay it at exec time

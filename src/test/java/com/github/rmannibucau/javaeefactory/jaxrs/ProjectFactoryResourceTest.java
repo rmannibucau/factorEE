@@ -927,7 +927,7 @@ public class ProjectFactoryResourceTest {
                 "  provided group: 'org.apache.openjpa', name: 'openjpa', version: '2.4.1'\n" +
                 "  testCompile group: 'junit', name: 'junit', version: '4.12'\n" +
                 "  testCompile group: 'org.apache.tomee', name: 'openejb-core', version: '7.0.0-M3'\n" +
-                "  javaagent group: 'org.apache.tomee', name: 'openejb-javaagent', version: '7.0.0-M3'\n" +
+                "  javaagentOpenJPA group: 'org.apache.tomee', name: 'openejb-javaagent', version: '7.0.0-M3'\n" +
                 "}\n", files.get("application/build.gradle"));
     }
 

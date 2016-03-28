@@ -186,7 +186,7 @@
               <cssSourceFiles>
                 <cssSourceFile>javaee-factory.css</cssSourceFile>
               </cssSourceFiles>
-              <cssFinalFile>javaee-factory.min.css</cssFinalFile>
+              <cssFinalFile>javaee-factory.css</cssFinalFile>
             </configuration>
             <goals>
               <goal>minify</goal>

@@ -25,8 +25,7 @@ export default Vue.extend({
             },
             view: {
                 light: true
-            },
-            facetPlaceholder: ''
+            }
         };
     },
     methods: {
@@ -34,9 +33,6 @@ export default Vue.extend({
             FactoryService.getConfiguration(
                 configuration => {
                     this.$set('configuration', configuration);
-                    this.facetPlaceholder = Object.keys(configuration.facets)
-                        .map(key => configuration.facets[key].map(e => e.name).join(', '))
-                        .join(', ');
 
                     // set this once config is loaded to be able to match one option
                     this.project.buildType = 'Maven';
@@ -45,8 +41,8 @@ export default Vue.extend({
                     // completion
                     let typeaheadConfig = Object.keys(configuration.facets)
                         .map(category => {
-                            var engine = new Bloodhound({
-                                datumTokenizer: Bloodhound.tokenizers.obj.nonword('name', 'description'),
+                            let engine = new Bloodhound({
+                                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'description'),
                                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                                 local: configuration.facets[category],
                                 identify(obj) { return obj.name; }
@@ -58,7 +54,7 @@ export default Vue.extend({
                                 return q ? engine.search(q, sync) :  sync(engine.index.all());
                               },
                               templates: {
-                                    header: '<h3>' + category + '</h3>',
+                                    header: '<h3>* ' + category + '</h3>',
                                     suggestion(item) {
                                         return '<div><strong>' + item.name + '</strong><br/><small>' + item.description + '</small></div>';
                                     },

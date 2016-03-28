@@ -49,6 +49,7 @@
     <![endif]-->
     <link href="<%= root %>/theme/startbootstrap-scrolling-nav-1.0.4/css/bootstrap.min.css" rel="stylesheet">
     <link href="<%= root %>/theme/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href='//fonts.googleapis.com/css?family=Short+Stack' rel='stylesheet' type='text/css'>
     <link href="<%= root %>/css/javaee-factory<% if (isProd) { %>.min<% } %>.css" rel="stylesheet">
 </head>
 

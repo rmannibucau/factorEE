@@ -1,58 +1,69 @@
 form(@submit.prevent="zip").row.col-sm-12
     h1.text-center.form-inline
-      span Create a&nbsp;
-      select(v-model="project.buildType").form-control
-        option(v-for="build in configuration.buildTypes", :value="build") {{ build }}
-      span &nbsp;project
+        | Create a&nbsp;
+        select(v-model="project.buildType").form-control
+            option(v-for="build in configuration.buildTypes", :value="build") {{ build }}
+        | &nbsp;project
     div.row
-      div.col-sm-6
-        h2.text-center Project Configuration
+      div.col-sm-12
+        h2.text-center
+            i.fa.fa-filter
+            | &nbsp;Facets configuration
+        div(id="search-box").row
+            div.col-md-6.col-md-offset-3
+                i(id="search-icon").fa.fa-search
+                input(id="projectFacetSearch", type="text", placeholder="Start to type a facet and select it to add it.", autocomplete="off").typeahead
+        div(id="zip-button").row.text-center
+            button(type="submit").btn.btn-lg.btn-primary.relief-button
+                i.fa.fa-file-archive-o
+                | &nbsp;Download as zip
+        div(id="selectedFacets", v-if="project.facets.length > 0").row
+            div.form-group.form-horizontal.col-md-6.col-md-offset-3.text-center
+                label Selected Facets
+                div.clearfix
+                div(track-by="$index", v-for="facet in project.facets", style="margin-right: 2px;").btn-group
+                    button(type="button", @click="removeFacet($index)").btn.btn-primary
+                        | {{ facet }}&nbsp;
+                        i.fa.fa-times
+                div.clearfix
+    div.row
+        h2.text-center Project Metadata
         div.text-right
-            a(href="#", @click="showAll", v-if="view.light") Show All Options
-            a(href="#", @click="showLight", v-if="!view.light") Show Less Options
-        div.form-group
-            label(for="projectGroup") Group
-            input(id="projectGroup", type="text", placeholder="Enter the project group...", required, v-model="project.group").form-control
-        div.form-group
-            label(for="projectArtifact") Artifact
-            input(id="projectArtifact", type="text", placeholder="Enter the project group...", required, v-model="project.artifact").form-control
-        div.form-group(v-if="!view.light")
-            label(for="projectVersion") Version
-            input(id="projectVersion", type="text", placeholder="Enter the project group...", required, v-model="project.version").form-control
-        div.form-group(v-if="!view.light")
-            label(for="projectName") Name
-            input(id="projectName", type="text", placeholder="Enter the project group...", required, v-model="project.name").form-control
-        div.form-group(v-if="!view.light")
-            label(for="projectDescription") Description
-            input(id="projectDescription", type="text", placeholder="Enter the project group...", required, v-model="project.description").form-control
-        div.form-group
-            label(for="projectPackage") Package
-            input(id="projectPackage", type="text", placeholder="Enter the project group...", required, v-model="project.packageBase").form-control
-        div.form-group(v-if="!view.light")
-            label(for="projectPackaging") Packaging
-            select(id="projectPackaging",v-model="project.packaging").form-control
-                option(:value="jar") jar
-                option(:value="war", selected) war
-        div.form-group(v-if="!view.light")
-            label(for="projectJavaVersion") Java Version
-            select(id="projectJavaVersion", v-model="project.javaVersion").form-control
-                option(:value="1.8", selected) 1.8
-                option(:value="1.7") 1.7
-      div.col-sm-6
-        h2.text-center Facets configurations
-        p Start to type a facet and select it to add it.
-        div.form-group
-            label(for="projectFacetSearch") Find a Facet
-            input(id="projectFacetSearch", type="text", placeholder="{{facetPlaceholder}}, ...", autocomplete="off").form-control.typeahead
-        div.form-group.form-horizontal
-            label Selected Facets
-            div.clearfix
-            div(track-by="$index", v-for="facet in project.facets", style="margin-right: 2px;").btn-group
-                button(type="button", @click="removeFacet($index)").btn.btn-primary.btn-xs
-                    | {{ facet }}
-                    i.fa.fa-times
-            div.clearfix
-    div(id="zip-button").row.text-center
-        button(type="submit").btn.btn-lg.btn-primary.relief-button
-            i.fa.fa-file-archive-o
-            | &nbsp;Download as zip
+            a(href="#", @click.prevent="showAll", v-if="view.light") Show All Options
+            a(href="#", @click.prevent="showLight", v-if="!view.light") Show Less Options
+        div.col-sm-4
+            div.form-group
+                label(for="projectGroup") Group
+                input(id="projectGroup", type="text", placeholder="Enter the project group...", required, v-model="project.group").form-control
+        div.col-sm-4
+            div.form-group
+                label(for="projectArtifact") Artifact
+                input(id="projectArtifact", type="text", placeholder="Enter the project group...", required, v-model="project.artifact").form-control
+        div(v-if="!view.light").col-sm-4
+            div.form-group
+                label(for="projectVersion") Version
+                input(id="projectVersion", type="text", placeholder="Enter the project group...", required, v-model="project.version").form-control
+        div(v-if="!view.light").col-sm-4
+            div.form-group
+                label(for="projectName") Name
+                input(id="projectName", type="text", placeholder="Enter the project group...", required, v-model="project.name").form-control
+        div(v-if="!view.light").col-sm-4
+            div.form-group
+                label(for="projectDescription") Description
+                input(id="projectDescription", type="text", placeholder="Enter the project group...", required, v-model="project.description").form-control
+        div(v-if="!view.light").col-sm-4
+            div.form-group
+                label(for="projectPackaging") Packaging
+                select(id="projectPackaging",v-model="project.packaging").form-control
+                    option(:value="jar") jar
+                    option(:value="war", selected) war
+        div.col-sm-4
+            div.form-group
+                label(for="projectPackage") Package
+                input(id="projectPackage", type="text", placeholder="Enter the project group...", required, v-model="project.packageBase").form-control
+        div(v-if="!view.light").col-sm-4
+            div.form-group
+                label(for="projectJavaVersion") Java Version
+                select(id="projectJavaVersion", v-model="project.javaVersion").form-control
+                    option(:value="1.8", selected) 1.8
+                    option(:value="1.7") 1.7

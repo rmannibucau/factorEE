@@ -5,13 +5,11 @@ A JavaEE oriented project factory.
 = TODO
 
 - Logo
-- Theming
 - Github integration? (directly create the project on github instead of downloading a zip)
-- More facets (JSF, JPA, Servlet, Asynchronism, proprietary configuration files?...)
+- More facets (JSF, Servlet, Asynchronism, proprietary configuration files?...)
 - ...
 
-= Dev
-
+= Dev workflow
 
 - Frontend: run
 
@@ -26,3 +24,89 @@ The website is deployed on http://localhost:8080/factorEE
 
 - Backend: tests use a custom JUnit runner avoiding to have to restart/redeploying anything between test (see `com.github.rmannibucau.javaeefactory.test.JavaEEFactory.Runner`)
 and `com.github.rmannibucau.javaeefactory.jaxrs.ProjectFactoryResourceTest` for a sample)
+
+== Before deployment/PR
+
+Ensure the js/css modification you did still work in a plain TomEE (and not only in embedded flavor). For that just retest
+quickly using the instance started with:
+
+[source]
+----
+mvn package tomee:run
+----
+
+The packaging is a bit longer cause it generates all js and optimize them and css before creating the war.
+
+== Adding a facet
+
+To add a facet just implement and register `com.github.rmannibucau.javaeefactory.service.facet.FacetGenerator`:
+
+[source,java]
+----
+@ApplicationScoped
+public class MyFacet implements FacetGenerator {
+    void register(@Observes final GeneratorRegistration init) { // registration (can be used to register multiple flavors of the same facet)
+        init.registerFacetType(this);
+    }
+
+    @Override
+    public Stream<InMemoryFile> create(final String packageBase, final Build build, final Collection<String> facets) {
+        // create InMemoryFile which are file which will be included in the final zip
+    }
+
+    @Override
+    public Stream<Dependency> dependencies(final Collection<String> facets) {
+        // add the dependencies you need of ignore this methods
+    }
+
+    @Override
+    public String description() {
+        return "A message to help users understand what it is about";
+    }
+
+    @Override
+    public String name() {
+        return "A unique name qualifying this facet";
+    }
+
+    @Override
+    public Category category() {
+        return Category.CORE; // or TEST, feel free to add other categories if needed
+    }
+}
+----
+
+=== InMemoryFile
+
+An `InMemoryFile` is the a structure containing a path for a file in the zip and its content. Path starts
+from `.` of the project (folder with the build file). Content can use templating (mustache) if you rely on `TemplateRenderer`:
+
+[source,java]
+----
+@ApplicationScoped
+public class MyFacet implements FacetGenerator {
+    @Inject
+    private TemplateRenderer tpl;
+
+    @Override
+    public Stream<InMemoryFile> create(final String packageBase, final Build build, final Collection<String> facets) {
+        final Map<String, String> model = new HashMap<String, String>() {{
+            put("package", packageBase);
+        }};
+
+        final String base = build.getMainJavaDirectory() + '/' + packageBase.replace('.', '/');
+        return Stream.of( // create First.java and Second.java in src/main/resources/factory/my/
+                new InMemoryFile(base + "/my/First.java", tpl.render("factory/my/First.java", model)),
+                new InMemoryFile(base + "/my/Second.java", tpl.render("factory/my/Second.java", model))
+        );
+    }
+
+    // ...
+}
+----
+
+TIP: to build a file path you can rely on `Build` which contains main folders depending the build type (Maven/Gradle). `facets`
+can be used if some generation is conditional on another facet presence. Typically a test facet will check it has the ore facets
+before generating a test.
+
+NOTE: if your facet can have dedicated tests you should integrate them in `TEST` facets like `ApplicationComposer` or `Arquillian` ones.

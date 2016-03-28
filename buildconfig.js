@@ -11,7 +11,8 @@
         'moment': '../../../../src/main/webapp/js/lib/moment/moment.min',
         'text': '../../../../src/main/webapp/js/lib/requirejs/text',
         'jquery-cookie': '../../../../src/main/webapp/js/lib/jquery/js.cookie',
-        'typeahead': '../../../../src/main/webapp/js/lib/bootstrap/bootstrap3-typeahead.min',
+        'bloodhound': '../../../../src/main/webapp/js/lib/jquery/bloodhound.min',
+        'typeahead': '../../../../src/main/webapp/js/lib/jquery/typeahead.jquery.min',
         'FileSaver': '../../../../src/main/webapp/js/lib/other/FileSaver.min',
         'jquery': 'empty:',
         'bootstrap': 'empty:',
@@ -21,8 +22,9 @@
         'VueRouter': ['Vue'],
         'VueResource': ['Vue'],
         'jquery-cookie': ['jquery'],
+        'bloodhound': ['jquery'],
+        'typeahead': ['jquery'],
         'bootstrap': ['jquery'],
-        'typeahead': ['bootstrap'],
         'boostrapNotify': ['bootstrap', 'jquery']
     }
 })

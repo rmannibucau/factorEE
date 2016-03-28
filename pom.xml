@@ -151,19 +151,46 @@
             <configuration>
               <filesets>
                 <fileset>
+                  <directory>${project.build.directory}/${project.build.finalName}/css/</directory>
+                  <includes>
+                    <include>javaee-factory.css</include>
+                  </includes>
+                </fileset>
+                <fileset>
                   <directory>${project.build.directory}/${project.build.finalName}/js/app</directory>
                 </fileset>
                 <fileset>
                   <directory>${project.build.directory}/${project.build.finalName}/js/lib</directory>
                   <excludes>
                     <exclude>**/require.min.js</exclude>
-                    <exclude>**/bootstrap-datetimepicker.min.css</exclude>
                     <exclude>ckeditor/**</exclude>
                   </excludes>
                 </fileset>
               </filesets>
               <excludeDefaultDirectories>true</excludeDefaultDirectories>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin> <!-- optimize custom css, js is done with r.js -->
+        <groupId>com.samaxes.maven</groupId>
+        <artifactId>minify-maven-plugin</artifactId>
+        <version>1.7.4</version>
+        <executions>
+          <execution>
+            <id>default-minify</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <charset>UTF-8</charset>
+              <cssSourceDir>css</cssSourceDir>
+              <cssSourceFiles>
+                <cssSourceFile>javaee-factory.css</cssSourceFile>
+              </cssSourceFiles>
+              <cssFinalFile>javaee-factory.min.css</cssFinalFile>
+            </configuration>
+            <goals>
+              <goal>minify</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

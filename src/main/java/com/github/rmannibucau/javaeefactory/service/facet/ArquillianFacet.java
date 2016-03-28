@@ -70,7 +70,12 @@ public class ArquillianFacet implements FacetGenerator, Versions {
 
     @Override
     public String name() {
-        return "Arquillian (test)";
+        return "Arquillian";
+    }
+
+    @Override
+    public Category category() {
+        return Category.TEST;
     }
 
     @Override

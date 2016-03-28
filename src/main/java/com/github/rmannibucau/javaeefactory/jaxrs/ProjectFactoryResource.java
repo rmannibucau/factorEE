@@ -16,11 +16,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.StreamingOutput;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Locale;
-import java.util.Map;
+import java.util.TreeMap;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toMap;
 
@@ -36,7 +37,20 @@ public class ProjectFactoryResource {
     private void init() {
         configuration = new FactoryConfiguration(
                 new ArrayList<>(generator.getGenerators().keySet()),
-                new HashMap<>(generator.getFacets().entrySet().stream().collect(toMap(Map.Entry::getKey, e -> e.getValue().description()))));
+                generator.getFacets().values().stream()
+                        .collect(toMap(
+                                e -> e.category().getHumanName(), e -> new ArrayList<>(singletonList(new FactoryConfiguration.Facet(e.name(), e.description()))),
+                                (u, u2) -> {
+                                    if (u == null) {
+                                        return u2;
+                                    }
+                                    u.addAll(u2);
+                                    return u;
+                                },
+                                TreeMap::new)));
+        // sort them all
+        Collections.sort(configuration.getBuildTypes());
+        configuration.getFacets().forEach((k, v) -> Collections.sort(v, (o1, o2) -> o1.getName().compareTo(o2.getName())));
     }
 
     @POST

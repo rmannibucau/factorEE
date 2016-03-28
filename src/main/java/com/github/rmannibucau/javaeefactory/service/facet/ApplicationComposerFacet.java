@@ -64,7 +64,12 @@ public class ApplicationComposerFacet implements FacetGenerator, Versions {
 
     @Override
     public String name() {
-        return "ApplicationComposer (test)";
+        return "ApplicationComposer";
+    }
+
+    @Override
+    public Category category() {
+        return Category.TEST;
     }
 
     @Override

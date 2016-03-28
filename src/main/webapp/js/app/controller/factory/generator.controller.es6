@@ -3,7 +3,8 @@ import template from "text!template/factory/generator.html";
 import FactoryService from "service/factory.service";
 import notifier from "util/notification";
 import $ from 'jquery';
-import typeahead  from 'typeahead';
+import 'typeahead';
+import 'bloodhound';
 import 'FileSaver';
 
 export default Vue.extend({
@@ -33,24 +34,52 @@ export default Vue.extend({
             FactoryService.getConfiguration(
                 configuration => {
                     this.$set('configuration', configuration);
-                    this.facetPlaceholder = Object.keys(configuration.facets).join(', ');
+                    this.facetPlaceholder = Object.keys(configuration.facets)
+                        .map(key => configuration.facets[key].map(e => e.name).join(', '))
+                        .join(', ');
 
                     // set this once config is loaded to be able to match one option
                     this.project.buildType = 'Maven';
                     this.project.javaVersion = '1.8';
 
                     // completion
-                    $('#projectFacetSearch').typeahead({
-                        source: Object.keys(configuration.facets),
-                        afterSelect: item => {
-                            this.project.facets.push(item);
-                            $('#projectFacetSearch').val('');
-                        },
-                        highlighter: function (item) {
-                            var description = configuration.facets[item];
-                            var html = '<div><strong>' + item + '</strong><br/><small>' + description + '</small></div>';
-                            return html;
-                        },
+                    let typeaheadConfig = Object.keys(configuration.facets)
+                        .map(category => {
+                            var engine = new Bloodhound({
+                                datumTokenizer: Bloodhound.tokenizers.obj.nonword('name', 'description'),
+                                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                                local: configuration.facets[category],
+                                identify(obj) { return obj.name; }
+                            });
+                            return {
+                              name: category,
+                              display: 'name',
+                              source(q, sync) {
+                                return q ? engine.search(q, sync) :  sync(engine.index.all());
+                              },
+                              templates: {
+                                    header: '<h3>' + category + '</h3>',
+                                    suggestion(item) {
+                                        return '<div><strong>' + item.name + '</strong><br/><small>' + item.description + '</small></div>';
+                                    },
+                                    empty(context) {
+                                        return '<h3>' + context.dataset + '</h3><div class="tt-suggestion">No Result</div>';
+                                    }
+                              }
+                            }
+                        });
+                    typeaheadConfig.unshift({
+                        highlight: true,
+                        minLength: 0
+                    });
+                    let input = $('#projectFacetSearch');
+                    input.typeahead.apply(input, typeaheadConfig);
+                    input.bind('typeahead:select', (evt, item) => {
+                        if (this.project.facets.indexOf(item.name) < 0) {
+                            this.project.facets.push(item.name);
+                        }
+                        input.typeahead('val', ''); // clear value
+                        input.blur(); // remove focus to get it back when reclicking
                     });
                 },
                 error => notifier.error('Error', 'Can\'t retrieve factory configuration (HTTP ' + error.status + ').'));

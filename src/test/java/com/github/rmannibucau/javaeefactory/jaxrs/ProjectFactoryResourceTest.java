@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -38,11 +39,15 @@ public class ProjectFactoryResourceTest {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .get(FactoryConfiguration.class);
         assertEquals(new HashSet<>(asList("Gradle", "Maven")), new HashSet<>(config.getBuildTypes()));
-        assertEquals(new HashMap<String, String>() {{
-            put("OpenJPA", "OpenJPA as JPA provider");
-            put("ApplicationComposer (test)", "Generates ApplicationComposer based test(s).");
-            put("JAX-RS", "Generate a Hello World JAX-RS endpoint.");
-            put("Arquillian (test)", "Generates Arquillian test(s) with TomEE Remote.");
+        assertEquals(new HashMap<String, List<FactoryConfiguration.Facet>>() {{
+            put("Core", asList(
+                    new FactoryConfiguration.Facet("JAX-RS", "Generate a Hello World JAX-RS endpoint."),
+                    new FactoryConfiguration.Facet("OpenJPA", "OpenJPA as JPA provider")
+            ));
+            put("Test", asList(
+                    new FactoryConfiguration.Facet("ApplicationComposer", "Generates ApplicationComposer based test(s)."),
+                    new FactoryConfiguration.Facet("Arquillian", "Generates Arquillian test(s) with TomEE Remote.")
+            ));
         }}, new HashMap<>(config.getFacets()));
     }
 
@@ -289,7 +294,7 @@ public class ProjectFactoryResourceTest {
                 .accept("application/zip")
                 .post(Entity.entity(new ProjectModel() {{
                     setBuildType("Maven");
-                    setFacets(asList("ApplicationComposer (test)", "JAX-RS"));
+                    setFacets(asList("ApplicationComposer", "JAX-RS"));
                 }}, MediaType.APPLICATION_JSON_TYPE), InputStream.class))) {
             ZipEntry entry;
             while ((entry = stream.getNextEntry()) != null) {
@@ -701,7 +706,7 @@ public class ProjectFactoryResourceTest {
                 .accept("application/zip")
                 .post(Entity.entity(new ProjectModel() {{
                     setBuildType("Gradle");
-                    setFacets(asList("OpenJPA", "ApplicationComposer (test)"));
+                    setFacets(asList("OpenJPA", "ApplicationComposer"));
                 }}, MediaType.APPLICATION_JSON_TYPE), InputStream.class))) {
             ZipEntry entry;
             while ((entry = stream.getNextEntry()) != null) {
@@ -934,7 +939,7 @@ public class ProjectFactoryResourceTest {
                 .accept("application/zip")
                 .post(Entity.entity(new ProjectModel() {{
                     setBuildType("Maven");
-                    setFacets(asList("OpenJPA", "ApplicationComposer (test)"));
+                    setFacets(asList("OpenJPA", "ApplicationComposer"));
                 }}, MediaType.APPLICATION_JSON_TYPE), InputStream.class))) {
             ZipEntry entry;
             while ((entry = stream.getNextEntry()) != null) {
@@ -1212,7 +1217,7 @@ public class ProjectFactoryResourceTest {
                 .accept("application/zip")
                 .post(Entity.entity(new ProjectModel() {{
                     setBuildType("Maven");
-                    setFacets(asList("OpenJPA", "Arquillian (test)"));
+                    setFacets(asList("OpenJPA", "Arquillian"));
                 }}, MediaType.APPLICATION_JSON_TYPE), InputStream.class))) {
             ZipEntry entry;
             while ((entry = stream.getNextEntry()) != null) {
@@ -1528,7 +1533,7 @@ public class ProjectFactoryResourceTest {
                 .accept("application/zip")
                 .post(Entity.entity(new ProjectModel() {{
                     setBuildType("Maven");
-                    setFacets(asList("Arquillian (test)", "JAX-RS"));
+                    setFacets(asList("Arquillian", "JAX-RS"));
                 }}, MediaType.APPLICATION_JSON_TYPE), InputStream.class))) {
             ZipEntry entry;
             while ((entry = stream.getNextEntry()) != null) {

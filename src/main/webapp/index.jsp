@@ -49,8 +49,7 @@
     <![endif]-->
     <link href="<%= root %>/theme/startbootstrap-scrolling-nav-1.0.4/css/bootstrap.min.css" rel="stylesheet">
     <link href="<%= root %>/theme/fontawesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="<%= root %>/css/javaee-factory.css" rel="stylesheet">
-    <link href="<%= root %>/js/lib/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
+    <link href="<%= root %>/css/javaee-factory<% if (isProd) { %>.min<% } %>.css" rel="stylesheet">
 </head>
 
 <body>
@@ -87,7 +86,8 @@
             'VueRouter': ['Vue'],
             'VueResource': ['Vue'],
             'jquery-cookie': ['jquery'],
-            'typeahead': ['bootstrap'],
+            'typeahead': ['jquery'],
+            'bloodhound': ['jquery'],
             'bootstrap': ['jquery'],
             'boostrapNotify': ['bootstrap', 'jquery']
         }
@@ -108,14 +108,16 @@
             'bootstrap': '../../theme/startbootstrap-scrolling-nav-1.0.4/js/bootstrap.min',
             'boostrapNotify': '../lib/bootstrap/bootstrap-notify.min',
             'jquery-cookie': '../lib/jquery/js.cookie',
-            'typeahead': '../lib/bootstrap/bootstrap3-typeahead.min',
+            'bloodhound': '../lib/jquery/bloodhound.min',
+            'typeahead': '../lib/jquery/typeahead.jquery.min',
             'FileSaver': '../lib/other/FileSaver.min'
         },
         shim: {
             'VueRouter': ['Vue'],
             'VueResource': ['Vue'],
             'jquery-cookie': ['jquery'],
-            'typeahead': ['bootstrap'],
+            'bloodhound': ['jquery'],
+            'typeahead': ['jquery'],
             'bootstrap': ['jquery'],
             'boostrapNotify': ['bootstrap', 'jquery']
         },

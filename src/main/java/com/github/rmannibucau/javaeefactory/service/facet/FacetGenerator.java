@@ -13,6 +13,8 @@ public interface FacetGenerator {
 
     String name();
 
+    Category category();
+
     default Stream<InMemoryFile> create(final String packageBase, final Build build,
                                         final Collection<String> facets) {
         return Stream.empty();
@@ -27,5 +29,13 @@ public interface FacetGenerator {
     class InMemoryFile {
         private final String path;
         private final String content;
+    }
+
+    @RequiredArgsConstructor
+    enum Category {
+        CORE("Core"), TEST("Test");
+
+        @Getter
+        private final String humanName;
     }
 }

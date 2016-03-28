@@ -8,8 +8,8 @@ form(@submit.prevent="zip").row.col-sm-12
       div.col-sm-6
         h2.text-center Project Configuration
         div.text-right
-            a(@click="showAll", v-if="view.light") Show All Options
-            a(@click="showLight", v-if="!view.light") Show Less Options
+            a(href="#", @click="showAll", v-if="view.light") Show All Options
+            a(href="#", @click="showLight", v-if="!view.light") Show Less Options
         div.form-group
             label(for="projectGroup") Group
             input(id="projectGroup", type="text", placeholder="Enter the project group...", required, v-model="project.group").form-control
@@ -43,7 +43,7 @@ form(@submit.prevent="zip").row.col-sm-12
         p Start to type a facet and select it to add it.
         div.form-group
             label(for="projectFacetSearch") Find a Facet
-            input(id="projectFacetSearch", type="text", placeholder="{{facetPlaceholder}}, ...", autocomplete="off").form-control
+            input(id="projectFacetSearch", type="text", placeholder="{{facetPlaceholder}}, ...", autocomplete="off").form-control.typeahead
         div.form-group.form-horizontal
             label Selected Facets
             div.clearfix
@@ -52,5 +52,7 @@ form(@submit.prevent="zip").row.col-sm-12
                     | {{ facet }}
                     i.fa.fa-times
             div.clearfix
-    div.row
-        button(type="submit").btn.btn-lg.btn-primary.btn-block.relief-button Create
+    div(id="zip-button").row.text-center
+        button(type="submit").btn.btn-lg.btn-primary.relief-button
+            i.fa.fa-file-archive-o
+            | &nbsp;Download as zip

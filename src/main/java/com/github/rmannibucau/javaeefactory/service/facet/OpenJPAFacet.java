@@ -58,4 +58,9 @@ public class OpenJPAFacet implements FacetGenerator,Versions {
     public String name() {
         return "OpenJPA";
     }
+
+    @Override
+    public Category category() {
+        return Category.CORE;
+    }
 }

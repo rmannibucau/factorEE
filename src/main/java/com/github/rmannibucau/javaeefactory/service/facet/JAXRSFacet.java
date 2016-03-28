@@ -50,4 +50,9 @@ public class JAXRSFacet implements FacetGenerator {
     public String name() {
         return "JAX-RS";
     }
+
+    @Override
+    public Category category() {
+        return Category.CORE;
+    }
 }

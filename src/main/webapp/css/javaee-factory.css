@@ -50,7 +50,7 @@ h2 {
 }
 
 .navbar-default {
-    background-color: #FF8000;
+    background-color: #303030;
 }
 
 .navbar-nav > li > a, .navbar-brand {
@@ -99,10 +99,14 @@ pre {
 
 /* footer */
 #footer {
+    color: #ccc;
+}
+#footer {
     font-weight: normal;
-    border-top: 1px #e7e7e7 solid;
+    /*border-top: 2px #D70100 solid;*/
     padding-top: 1.5em;
     padding-bottom: 0.5em;
+    background-color: #303030;
 }
 
 /* spinner */
@@ -116,7 +120,7 @@ pre {
     right: 0;
     margin: auto;
     -webkit-user-select: none;
-    color: #FF8000;
+    color: #303030;
     padding-top: -1em;
 }
 .spinner-text {
@@ -127,7 +131,7 @@ pre {
 .spinner > div {
     width: 18px;
     height: 18px;
-    background-color: #FF8000;
+    background-color: #303030;
 
     border-radius: 100%;
     display: inline-block;
@@ -163,6 +167,13 @@ pre {
 /* data low protection block */
 #data-low-protection {
     z-index: 5;
+    padding: 5px;
+}
+
+/* links */
+a {
+    color: #D70100;
+    text-decoration: none;
 }
 
 /* navabar customization */
@@ -173,23 +184,26 @@ pre {
 #top {
     width: 100%;
     color: #eee;
-    background-color: #FF8000;
+    background-color: #303030;
     font-size: 25px;
     padding: 0.5em 0;
-    border-bottom: 5px solid #5382A1;
+    border-bottom: 5px solid #D70100;
 }
 #header-title {
     color: #fff;
 }
 #header-title small {
-    color: #5382A1;
+    color: #ccc;
+}
+.red {
+    color: #D70100;
 }
 .relief-button {
     font-size: 25px;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FF8000), to(#DF7401));
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #D70100), to(#590000));
 }
 .relief-button:hover {
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FF8000), to(#FAAC58));
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #D70100), to(#820100));
 }
 #zip-button {
     margin-top: 3em;

@@ -7,7 +7,7 @@ form(@submit.prevent="zip").row.col-sm-12
     div.row
       div.col-sm-12
         h2.text-center
-            i.fa.fa-filter
+            i.fa.fa-check
             | &nbsp;Facets configuration
         div(id="search-box").row
             div.col-md-6.col-md-offset-3
@@ -30,8 +30,12 @@ form(@submit.prevent="zip").row.col-sm-12
     div.row
         h2.text-center Project Metadata
         div.text-right
-            a(href="#", @click.prevent="showAll", v-if="view.light") Show All Options
-            a(href="#", @click.prevent="showLight", v-if="!view.light") Show Less Options
+            a(href="#", @click.prevent="showAll", v-if="view.light")
+                | Show All Options&nbsp;
+                i.fa.fa-caret-down
+            a(href="#", @click.prevent="showLight", v-if="!view.light")
+                | Show Less Options&nbsp;
+                i.fa.fa-caret-up
         div.col-sm-4
             div.form-group
                 label(for="projectGroup") Group

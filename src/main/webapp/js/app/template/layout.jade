@@ -6,7 +6,10 @@ div(id="data-low-protection", style="margin-bottom:0;", role="alert", v-if="show
     button(type="button", @click="rejectCookies()").btn.btn-danger.btn-sm Hide
 div(id="top").container-fluid
     div(id="top-nav").container
-        h1(id="header-title") JavaEE Factory&nbsp;
+        h1(id="header-title")
+            | Java
+            span.red EE
+            | &nbsp;Factory&nbsp;
             wbr
             small bootstrap your EE application
 
@@ -22,11 +25,11 @@ footer(id="footer").text-center.center-block
             | &nbsp;is an effort to promote &#123;JavaEE&#125;
     section.col-sm-3
         p.txt-railway
+            i.fa.fa-code-fork
+            | &nbsp;Fork me on&nbsp;
             a(href="https://github.com/rmannibucau/factorEE", target="_blank")
-                i.fa.fa-code-fork
-                | &nbsp;Fork me
-            | &nbsp;on Github&nbsp;
-            i.fa.fa-github-alt
+                | Github&nbsp;
+                i.fa.fa-github-alt
     section.col-sm-3
         p.txt-railway
             | Powered by Blue Jeen and&nbsp;
@@ -35,7 +38,9 @@ footer(id="footer").text-center.center-block
                 | &nbsp;RMannibucau
     section.col-sm-3
         p.txt-railway Special thanks to&nbsp;
-            a(href="https://start.spring.io/", target="_blank") Spring Initializr
-            | &nbsp;
-            i.fa.fa-leaf
+            a(href="https://start.spring.io/", target="_blank")
+                | Spring Initializr&nbsp;
+                i.fa.fa-leaf
             | &nbsp;for the idea
+    div.clearfix
+

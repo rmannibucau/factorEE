@@ -5,7 +5,7 @@ html, body, #content {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Short Stack', cursive;
+    font-family: 'Ubuntu', cursive;
     font-weight: normal;
 }
 h1 {
@@ -55,6 +55,20 @@ h2 {
 
 .navbar-nav > li > a, .navbar-brand {
     color: #ffffff !important;
+}
+
+/* selected facet space */
+.box-space {
+    margin-right: 0.5em;
+}
+.facet-cross-space {
+    margin-left: 0.5em;
+}
+.box-vspace {
+    margin-bottom: 0.5em;
+}
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+    border-radius: 4px;
 }
 
 /* some fixes for idea highlightjs theme */

@@ -21,10 +21,11 @@ form(@submit.prevent="zip").row.col-sm-12
             div.form-group.form-horizontal.col-md-6.col-md-offset-3.text-center
                 label Selected Facets
                 div.clearfix
-                div(track-by="$index", v-for="facet in project.facets", style="margin-right: 2px;").btn-group
+                div(track-by="$index", v-for="facet in project.facets", style="margin-right: 2px;").btn-group.box-vspace
                     button(type="button", @click="removeFacet($index)").btn.btn-primary
-                        | {{ facet }}&nbsp;
-                        i.fa.fa-times
+                        | {{ facet }}
+                        i.fa.fa-times.facet-cross-space
+                    span(v-if="$index != project.facets.length - 1").box-space
                 div.clearfix
     div.row
         h2.text-center Project Metadata

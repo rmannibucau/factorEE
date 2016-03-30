@@ -7,7 +7,7 @@ var router = new VueRouter();
 router.map({
     '/': {
         component: LayoutController,
-        subRoutes: { // in case we have multiple pages
+        subRoutes: { // in case we have multiple pages later
             '/': {component: FactoryController}
         }
     }
@@ -15,10 +15,8 @@ router.map({
 router.redirect({'*': '/'});
 router.beforeEach(transition => {
     transition.next();
-
-    var path = transition.to.path;
     if (AnalyticsService.active()) {
-        AnalyticsService.pageView(path);
+        AnalyticsService.pageView(transition.to.path);
     }
 });
 

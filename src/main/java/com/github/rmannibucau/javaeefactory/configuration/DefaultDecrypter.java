@@ -11,7 +11,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-// same as in tomee to get tomee tooling
+// same as in javaee to get javaee tooling
 @ApplicationScoped
 public class DefaultDecrypter implements ConfigurationProducer.Decrypter {
     private static final String TRANSFORMATION = "DESede";

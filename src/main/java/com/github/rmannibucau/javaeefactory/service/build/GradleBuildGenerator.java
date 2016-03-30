@@ -4,8 +4,8 @@ import com.github.rmannibucau.javaeefactory.service.domain.Build;
 import com.github.rmannibucau.javaeefactory.service.domain.Dependency;
 import com.github.rmannibucau.javaeefactory.service.domain.ProjectRequest;
 import com.github.rmannibucau.javaeefactory.service.event.GeneratorRegistration;
-import com.github.rmannibucau.javaeefactory.service.facet.ApplicationComposerFacet;
-import com.github.rmannibucau.javaeefactory.service.facet.OpenJPAFacet;
+import com.github.rmannibucau.javaeefactory.service.facet.testing.ApplicationComposerFacet;
+import com.github.rmannibucau.javaeefactory.service.facet.javaee.OpenJPAFacet;
 import com.github.rmannibucau.javaeefactory.service.facet.Versions;
 import com.github.rmannibucau.javaeefactory.service.template.TemplateRenderer;
 import lombok.Data;
@@ -45,7 +45,10 @@ public class GradleBuildGenerator implements BuildGenerator, Versions {
                              final Collection<String> facets) {
         final GradleBuild model = new GradleBuild(
                 buildConfiguration,
-                dependencies.stream().map(d -> "test".equals(d.getScope()) ? new Dependency(d, "testCompile") : d).collect(toList()),
+                dependencies.stream()
+                        .map(d -> "test".equals(d.getScope()) ? new Dependency(d, "testCompile") : d) // just renaming
+                        .map(d -> "runtime".equals(d.getScope()) ? new Dependency(d, "compile") : d) // otherwise not there for tests
+                        .collect(toList()),
                 new LinkedHashSet<>(), new LinkedHashSet<>(),
                 new LinkedHashSet<>("war".endsWith(buildConfiguration.getPackaging()) ? asList("java", "war") : singletonList("java")),
                 new LinkedHashSet<>());

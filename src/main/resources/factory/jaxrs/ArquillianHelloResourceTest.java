@@ -38,7 +38,7 @@ public class ArquillianHelloResourceTest {
         assertEquals(
                 "test",
                 ClientBuilder.newBuilder().build()
-                        .register(new JohnzonProvider<>()) // we run in a remote tomee so we need to do it ourself
+                        .register(new JohnzonProvider<>()) // we run in a remote javaee so we need to do it ourself
                         .target(url.toExternalForm()).path("api/hello")
                         .request(MediaType.APPLICATION_JSON_TYPE)
                         .get(Hello.class)

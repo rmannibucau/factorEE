@@ -2,7 +2,6 @@ package com.github.rmannibucau.javaeefactory.test;
 
 import lombok.Getter;
 import org.apache.openejb.testing.Application;
-import org.apache.openejb.testing.ContainerProperties;
 import org.apache.openejb.testing.RandomPort;
 import org.apache.tomee.embedded.Configuration;
 import org.apache.tomee.embedded.Container;
@@ -25,13 +24,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
 // helper for tests, runner is reusable
-@ContainerProperties({
-        @ContainerProperties.Property(name = "javaeefactory.environment", value = "dev"),
-        @ContainerProperties.Property(name = "openejb.jul.forceReload", value = "true")
-})
 public class JavaEEFactory {
     @RandomPort("http")
     private URL base;
@@ -96,11 +90,14 @@ public class JavaEEFactory {
                     }
 
                     // setup the container config reading class annotation, using a randome http port and deploying the classpath
-                    final Configuration configuration = new Configuration().randomHttpPort();
-                    Stream.of(JavaEEFactory.class.getAnnotation(ContainerProperties.class).value())
-                            .forEach(p -> configuration.property(p.name(), p.value()));
+                    final Configuration configuration = new Configuration().randomHttpPort()
+                            .property("openejb.environment.default", "false")
+                            .property("javaeefactory.environment", "dev")
+                            .property("openejb.jul.forceReload", "true");
+
                     final Container container = new Container(configuration)
                             .deployClasspathAsWebApp("javaeefactory", new File("src/main/webapp"));
+
                     CONTAINER.compareAndSet(null, container);
 
                     // create app helper and inject basic values

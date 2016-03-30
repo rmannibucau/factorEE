@@ -1,8 +1,10 @@
-package com.github.rmannibucau.javaeefactory.service.facet;
+package com.github.rmannibucau.javaeefactory.service.facet.javaee;
 
 import com.github.rmannibucau.javaeefactory.service.domain.Build;
 import com.github.rmannibucau.javaeefactory.service.domain.Dependency;
 import com.github.rmannibucau.javaeefactory.service.event.GeneratorRegistration;
+import com.github.rmannibucau.javaeefactory.service.facet.FacetGenerator;
+import com.github.rmannibucau.javaeefactory.service.facet.libraries.LombokFacet;
 import com.github.rmannibucau.javaeefactory.service.template.TemplateRenderer;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -18,6 +20,9 @@ public class JAXRSFacet implements FacetGenerator {
     @Inject
     private TemplateRenderer tpl;
 
+    @Inject
+    private LombokFacet lombokFacet;
+
     void register(@Observes final GeneratorRegistration init) {
         init.registerFacetType(this);
     }
@@ -32,7 +37,9 @@ public class JAXRSFacet implements FacetGenerator {
         return Stream.of(
                 new InMemoryFile(base + "/jaxrs/ApplicationConfig.java", tpl.render("factory/jaxrs/ApplicationConfig.java", model)),
                 new InMemoryFile(base + "/jaxrs/HelloResource.java", tpl.render("factory/jaxrs/HelloResource.java", model)),
-                new InMemoryFile(base + "/jaxrs/Hello.java", tpl.render("factory/jaxrs/Hello.java", model))
+                new InMemoryFile(
+                        base + "/jaxrs/Hello.java",
+                        facets.contains(lombokFacet.name()) ? tpl.render("factory/jaxrs/Hello_lombok.java", model) : tpl.render("factory/jaxrs/Hello.java", model))
         );
     }
 
@@ -49,6 +56,12 @@ public class JAXRSFacet implements FacetGenerator {
     @Override
     public String name() {
         return "JAX-RS";
+    }
+
+    @Override
+    public String readme() {
+        return "JAX-RS is the big boom of JavaEE 6. It allows to create a smooth frontend naturally integrated with Javascript \n" +
+                "application when combined with JSON.";
     }
 
     @Override

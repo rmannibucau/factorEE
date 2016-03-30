@@ -32,6 +32,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 @ApplicationScoped
@@ -44,6 +45,9 @@ public class ProjectGenerator {
 
     @Inject
     private Event<GeneratorRegistration> registrationEvent;
+
+    @Inject
+    private ReadmeGenerator readmeGenerator;
 
     private List<String> scopesOrdering;
 
@@ -101,10 +105,23 @@ public class ProjectGenerator {
                 "<?xml version=\"1.0\"?>\n<beans xmlns=\"http://xmlns.jcp.org/xml/ns/javaee\" bean-discovery-mode=\"all\" version=\"1.1\" />\n");
 
         // generate facet files
-        facets.stream()
+        final Map<FacetGenerator, List<String>> filePerFacet = facets.stream()
                 .map(s -> s.toLowerCase(Locale.ENGLISH))
-                .flatMap(facet -> this.facets.get(facet).create(request.getPackageBase(), build, facets))
-                .forEach(file -> files.put(file.getPath(), file.getContent()));
+                .collect(toMap(this.facets::get, f -> {
+                    final FacetGenerator g = this.facets.get(f);
+                    return g.create(request.getPackageBase(), build, facets)
+                            .map(file -> {
+                                files.put(file.getPath(), file.getContent());
+                                return file;
+                            })
+                            .map(FacetGenerator.InMemoryFile::getPath)
+                            .collect(toList());
+                }));
+
+        // generate README.adoc if needed
+        if (!files.containsKey("README.adoc")) {
+            files.put("README.adoc", readmeGenerator.createReadme(request.getBuildConfiguration().getName(), filePerFacet));
+        }
 
         // now create the zip prefixing it with the artifact value
         final String rootName = request.getBuildConfiguration().getArtifact();

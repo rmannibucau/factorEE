@@ -1,8 +1,13 @@
-package com.github.rmannibucau.javaeefactory.service.facet;
+package com.github.rmannibucau.javaeefactory.service.facet.testing;
 
 import com.github.rmannibucau.javaeefactory.service.domain.Build;
 import com.github.rmannibucau.javaeefactory.service.domain.Dependency;
 import com.github.rmannibucau.javaeefactory.service.event.GeneratorRegistration;
+import com.github.rmannibucau.javaeefactory.service.facet.FacetGenerator;
+import com.github.rmannibucau.javaeefactory.service.facet.Versions;
+import com.github.rmannibucau.javaeefactory.service.facet.javaee.JAXRSFacet;
+import com.github.rmannibucau.javaeefactory.service.facet.javaee.OpenJPAFacet;
+import com.github.rmannibucau.javaeefactory.service.facet.libraries.deltaspike.DeltaspikeConfiguration;
 import com.github.rmannibucau.javaeefactory.service.template.TemplateRenderer;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,6 +26,9 @@ public class ApplicationComposerFacet implements FacetGenerator, Versions {
 
     @Inject
     private OpenJPAFacet openjpa;
+
+    @Inject
+    private DeltaspikeConfiguration deltaspikeConfiguration;
 
     @Inject
     private TemplateRenderer tpl;
@@ -51,6 +59,11 @@ public class ApplicationComposerFacet implements FacetGenerator, Versions {
                     build.getTestJavaDirectory() + '/' + packageBase.replace('.', '/') + "/jpa/ApplicationComposerHelloEntityTest.java",
                     tpl.render("factory/openjpa/ApplicationComposerHelloEntityTest.java", model)));
         }
+        if (facets.contains(deltaspikeConfiguration.name())) {
+            files.add(new InMemoryFile(
+                    build.getTestJavaDirectory() + '/' + packageBase.replace('.', '/') + "/deltaspike/ApplicationComposerConfigurationTest.java",
+                    tpl.render("factory/deltaspike/ApplicationComposerConfigurationTest.java", model)));
+        }
         return files.stream();
     }
 
@@ -75,5 +88,13 @@ public class ApplicationComposerFacet implements FacetGenerator, Versions {
     @Override
     public String description() {
         return "Generates ApplicationComposer based test(s).";
+    }
+
+    @Override
+    public String readme() {
+        return "ApplicationComposer is a TomEE feature allowing to:\n" +
+                "\n" +
+                "- test with JUnit or TestNG any EE application in embedded mode building programmatically the EE model instead of relying on scanning\n" +
+                "- deploy a standalone application using ApplicationComposers helper (very useful for application without frontend like batch)";
     }
 }

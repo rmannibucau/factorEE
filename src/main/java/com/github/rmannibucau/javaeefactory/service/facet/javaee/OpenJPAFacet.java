@@ -1,8 +1,11 @@
-package com.github.rmannibucau.javaeefactory.service.facet;
+package com.github.rmannibucau.javaeefactory.service.facet.javaee;
 
 import com.github.rmannibucau.javaeefactory.service.domain.Build;
 import com.github.rmannibucau.javaeefactory.service.domain.Dependency;
 import com.github.rmannibucau.javaeefactory.service.event.GeneratorRegistration;
+import com.github.rmannibucau.javaeefactory.service.facet.FacetGenerator;
+import com.github.rmannibucau.javaeefactory.service.facet.libraries.LombokFacet;
+import com.github.rmannibucau.javaeefactory.service.facet.Versions;
 import com.github.rmannibucau.javaeefactory.service.template.TemplateRenderer;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -20,6 +23,9 @@ public class OpenJPAFacet implements FacetGenerator,Versions {
     @Inject
     private TemplateRenderer tpl;
 
+    @Inject
+    private LombokFacet lombokFacet;
+
     void register(@Observes final GeneratorRegistration init) {
         init.registerFacetType(this);
     }
@@ -32,7 +38,8 @@ public class OpenJPAFacet implements FacetGenerator,Versions {
         return Stream.of(
                 new InMemoryFile(
                         build.getMainJavaDirectory() + '/' + packageBase.replace('.', '/') + "/jpa/HelloEntity.java",
-                        tpl.render("factory/openjpa/HelloEntity.java", model)
+                        facets.contains(lombokFacet.name()) ?
+                                tpl.render("factory/openjpa/HelloEntity_lombok.java", model) : tpl.render("factory/openjpa/HelloEntity.java", model)
                 ),
                 new InMemoryFile(
                         build.getMainResourcesDirectory() + "/META-INF/persistence.xml",
@@ -57,6 +64,11 @@ public class OpenJPAFacet implements FacetGenerator,Versions {
     @Override
     public String name() {
         return "OpenJPA";
+    }
+
+    @Override
+    public String readme() {
+        return "OpenJPA is the Apache JPA provider. For now it targets JPA version 2.0.";
     }
 
     @Override

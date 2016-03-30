@@ -1,6 +1,7 @@
 package {{package}}.jaxrs;
 
 import org.apache.openejb.junit.ApplicationComposer;
+import org.apache.openejb.testing.CdiExtensions;
 import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.EnableServices;
 import org.apache.openejb.testing.RandomPort;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 @SimpleLog
 @EnableServices("jaxrs")
+@CdiExtensions(/* skip extensions since not needed in this test */)
 @Classes(cdi = true, context = "app", value = {ApplicationConfig.class, HelloResource.class})
 @RunWith(ApplicationComposer.class)
 public class ApplicationComposerHelloResourceTest {

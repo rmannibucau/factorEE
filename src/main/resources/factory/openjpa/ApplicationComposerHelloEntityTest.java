@@ -2,6 +2,7 @@ package {{package}}.jpa;
 
 import org.apache.openejb.api.configuration.PersistenceUnitDefinition;
 import org.apache.openejb.junit.ApplicationComposer;
+import org.apache.openejb.testing.CdiExtensions;
 import org.apache.openejb.testing.Classes;
 import org.apache.openejb.testing.SimpleLog;
 import org.junit.After;
@@ -17,6 +18,7 @@ import javax.transaction.UserTransaction;
 import static org.junit.Assert.assertEquals;
 
 @SimpleLog
+@CdiExtensions(/* skip extensions since not needed in this test */)
 @Classes(cdi = true, value = HelloEntity.class /* to find by scanning the entity */)
 @PersistenceUnitDefinition // activates JPA
 @RunWith(ApplicationComposer.class)

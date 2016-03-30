@@ -4,9 +4,9 @@ import com.github.rmannibucau.javaeefactory.service.domain.Build;
 import com.github.rmannibucau.javaeefactory.service.domain.Dependency;
 import com.github.rmannibucau.javaeefactory.service.domain.ProjectRequest;
 import com.github.rmannibucau.javaeefactory.service.event.GeneratorRegistration;
-import com.github.rmannibucau.javaeefactory.service.facet.ApplicationComposerFacet;
-import com.github.rmannibucau.javaeefactory.service.facet.OpenJPAFacet;
 import com.github.rmannibucau.javaeefactory.service.facet.Versions;
+import com.github.rmannibucau.javaeefactory.service.facet.javaee.OpenJPAFacet;
+import com.github.rmannibucau.javaeefactory.service.facet.testing.ApplicationComposerFacet;
 import com.github.rmannibucau.javaeefactory.service.template.TemplateRenderer;
 import lombok.Data;
 
@@ -84,24 +84,24 @@ public class MavenBuildGenerator implements BuildGenerator, Versions {
                                              final String packageBase,
                                              final Collection<String> facets) {
         final Collection<Plugin> buildPlugins = new ArrayList<>(plugins);
+
         if (facets.contains(openjpa.name())) {
             buildPlugins.add(
                     new Plugin(
                             "org.apache.openjpa", "openjpa-maven-plugin", OPENJPA,
                             singletonList(new Execution("openjpa-enhance", "process-classes", "enhance")),
                             entries("includes", packageBase.replace('.', '/') + "/jpa/*.class")));
-
-            // embedded tests need the javaagent for openjpa to avoid surprises
-            if (facets.contains(applicationComposer.name())) {
-                // no need of the dep since it is transitive with app composer
-                buildPlugins.add(
-                        new Plugin(
-                                "org.apache.maven.plugins", "maven-surefire-plugin", "2.19", emptySet(), new LinkedHashMap<String, String>() {{
-                            put("argLine", "\"-javaagent:${settings.localRepository}/org/apache/tomee/openejb-javaagent/" + TOMEE + "/openejb-javaagent-" + TOMEE + ".jar\"");
-                            put("trimStackTrace", "false");
-                        }}.entrySet()));
-            }
         }
+
+        buildPlugins.add(new Plugin(
+                "org.apache.maven.plugins", "maven-surefire-plugin", SUREFIRE, emptySet(), new LinkedHashMap<String, String>() {{
+            put("trimStackTrace", "false");
+            put("runOrder", "alphabetical");
+            if (facets.contains(openjpa.name()) && facets.contains(applicationComposer.name())) {
+                put("argLine", "\"-javaagent:${settings.localRepository}/org/apache/tomee/openejb-javaagent/" + TOMEE + "/openejb-javaagent-" + TOMEE + ".jar\"");
+            }
+        }}.entrySet()));
+
         return buildPlugins;
     }
 

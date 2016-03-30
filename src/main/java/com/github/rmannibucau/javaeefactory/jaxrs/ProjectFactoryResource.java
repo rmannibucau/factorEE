@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.TreeMap;
 
+import static com.github.rmannibucau.javaeefactory.lang.MapCollectors.mergeCollections;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.ofNullable;
@@ -40,13 +41,7 @@ public class ProjectFactoryResource {
                 generator.getFacets().values().stream()
                         .collect(toMap(
                                 e -> e.category().getHumanName(), e -> new ArrayList<>(singletonList(new FactoryConfiguration.Facet(e.name(), e.description()))),
-                                (u, u2) -> {
-                                    if (u == null) {
-                                        return u2;
-                                    }
-                                    u.addAll(u2);
-                                    return u;
-                                },
+                                mergeCollections(),
                                 TreeMap::new)));
         // sort them all
         Collections.sort(configuration.getBuildTypes());

@@ -15,6 +15,10 @@ public interface FacetGenerator {
 
     Category category();
 
+    default String readme() {
+        return "";
+    }
+
     default Stream<InMemoryFile> create(final String packageBase, final Build build,
                                         final Collection<String> facets) {
         return Stream.empty();
@@ -33,7 +37,7 @@ public interface FacetGenerator {
 
     @RequiredArgsConstructor
     enum Category {
-        CORE("Core"), TEST("Test");
+        CORE("Core"), TEST("Test"), LIBRARIES("Libraries");
 
         @Getter
         private final String humanName;

@@ -84,7 +84,7 @@
           <trimStackTrace>false</trimStackTrace>
         </configuration>
       </plugin>
-      <plugin> <!-- mvn tomee-embedded:run to start testing against a real MySQL -->
+      <plugin> <!-- mvn javaee-embedded:run to start testing against a real MySQL -->
         <groupId>org.apache.tomee.maven</groupId>
         <artifactId>tomee-embedded-maven-plugin</artifactId>
         <version>${tomee.version}</version>

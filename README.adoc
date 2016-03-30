@@ -60,8 +60,13 @@ public class MyFacet implements FacetGenerator {
     }
 
     @Override
+    public String readme() {
+        return "A text shown in the README.adoc for this facet description";
+    }
+
+    @Override
     public String description() {
-        return "A message to help users understand what it is about";
+        return "A message to help users understand what it is about in the GUI";
     }
 
     @Override

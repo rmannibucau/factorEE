@@ -59,15 +59,6 @@ public class JavaEEFactory {
         private static final AtomicReference<Container> CONTAINER = new AtomicReference<>();
         private static final AtomicReference<Thread> HOOK = new AtomicReference<>();
 
-        public static void close() {
-            final Thread hook = HOOK.get();
-            if (hook != null) {
-                if (HOOK.compareAndSet(hook, null)) {
-                    hook.run();
-                }
-            }
-        }
-
         @Override
         protected List<MethodRule> rules(final Object test) {
             final List<MethodRule> rules = super.rules(test);
@@ -91,7 +82,10 @@ public class JavaEEFactory {
 
                     // setup the container config reading class annotation, using a randome http port and deploying the classpath
                     final Configuration configuration = new Configuration().randomHttpPort()
-                            .property("openejb.environment.default", "false")
+
+                            .property("jdbc/javaeefactory", "new://Resource?type=DataSource")
+                            .property("jdbc/javaeefactory.JdbcUrl", "jdbc:hsqldb:mem:javaeefactory")
+
                             .property("javaeefactory.environment", "dev")
                             .property("openejb.jul.forceReload", "true");
 

@@ -204,6 +204,12 @@ a {
 .red {
     color: #D70100;
 }
+.red2 {
+    color: #820100;
+}
+.red3 {
+    color: #590000;
+}
 .relief-button {
     font-size: 25px;
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #D70100), to(#590000));
@@ -247,8 +253,19 @@ a {
 
 
 /* typeahead styling*/
+.tt-menu hr {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
 .tt-menu h3 {
-    font-size: 30px;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    font-size: 18px;
+    font-weight: bolder;
+}
+.tt-menu h2 {
     font-weight: bold;
 }
 span.twitter-typeahead .tt-menu,
@@ -260,7 +277,6 @@ span.twitter-typeahead .tt-dropdown-menu {
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 18px;
   text-align: left;
   background-color: #ffffff;
   border: 1px solid #cccccc;
@@ -271,12 +287,12 @@ span.twitter-typeahead .tt-dropdown-menu {
   background-clip: padding-box;
 }
 span.twitter-typeahead h3 {
-  padding-left: 12px;
+  padding-left: 15px;
   clear: both;
 }
 span.twitter-typeahead .tt-suggestion {
   display: block;
-  padding: 3px 20px;
+  padding: 3px 15px;
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
@@ -293,14 +309,12 @@ span.twitter-typeahead .tt-suggestion:focus {
 .input-group.input-group-lg span.twitter-typeahead .form-control {
   height: 46px;
   padding: 10px 16px;
-  font-size: 18px;
   line-height: 1.3333333;
   border-radius: 6px;
 }
 .input-group.input-group-sm span.twitter-typeahead .form-control {
   height: 30px;
   padding: 5px 10px;
-  font-size: 12px;
   line-height: 1.5;
   border-radius: 3px;
 }
@@ -343,5 +357,4 @@ span.twitter-typeahead {
 .input-group.input-group-lg span.twitter-typeahead .tt-menu,
 .input-group.input-group-lg span.twitter-typeahead .tt-dropdown-menu {
   top: 46px !important;
-  font-size: 18px;
 }

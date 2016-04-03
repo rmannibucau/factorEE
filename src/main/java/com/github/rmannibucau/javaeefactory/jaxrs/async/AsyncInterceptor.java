@@ -75,7 +75,7 @@ public class AsyncInterceptor {
         @Inject
         private BeanManager beanManager;
 
-        @Resource(name = "thread/taskExecutor")
+        @Resource(name = "thread/jaxrsExecutor")
         private ManagedExecutorService executorService;
 
         @Inject

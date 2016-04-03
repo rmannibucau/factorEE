@@ -39,7 +39,9 @@ export default Vue.extend({
                     this.project.javaVersion = '1.8';
 
                     // completion
-                    let typeaheadConfig = Object.keys(configuration.facets)
+                    let categories = Object.keys(configuration.facets);
+                    let lastCategory = categories ? categories[categories.length - 1] : '';
+                    let typeaheadConfig = categories
                         .map(category => {
                             let engine = new Bloodhound({
                                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'description'),
@@ -54,12 +56,15 @@ export default Vue.extend({
                                 return q ? engine.search(q, sync) :  sync(engine.index.all());
                               },
                               templates: {
-                                    header: '<h3>* ' + category + '</h3>',
+                                    header: '<h3><i class="fa fa-hashtag"></i> ' + category + '</h3>',
+                                    footer: function (context) {
+                                        return context.dataset != lastCategory ? '<hr>' : '';
+                                    },
                                     suggestion(item) {
                                         return '<div><strong>' + item.name + '</strong><br/><small>' + item.description + '</small></div>';
                                     },
                                     empty(context) {
-                                        return '<h3>' + context.dataset + '</h3><div class="tt-suggestion">No Result</div>';
+                                        return '<h3>' + context.dataset + '</h3><div class="tt-suggestion">No Result matching \'' + context.query + '\'</div>';
                                     }
                               }
                             }

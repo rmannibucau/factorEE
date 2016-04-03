@@ -4,6 +4,7 @@ import com.github.rmannibucau.javaeefactory.service.build.BuildGenerator;
 import com.github.rmannibucau.javaeefactory.service.domain.Build;
 import com.github.rmannibucau.javaeefactory.service.domain.Dependency;
 import com.github.rmannibucau.javaeefactory.service.domain.ProjectRequest;
+import com.github.rmannibucau.javaeefactory.service.event.CreateProject;
 import com.github.rmannibucau.javaeefactory.service.event.GeneratorRegistration;
 import com.github.rmannibucau.javaeefactory.service.facet.FacetGenerator;
 import lombok.Getter;
@@ -48,6 +49,9 @@ public class ProjectGenerator {
 
     @Inject
     private ReadmeGenerator readmeGenerator;
+
+    @Inject
+    private Event<CreateProject> onCreate;
 
     private List<String> scopesOrdering;
 
@@ -163,5 +167,7 @@ public class ProjectGenerator {
         } catch (final IOException e) {
             throw new IllegalStateException(e);
         }
+
+        onCreate.fire(new CreateProject(facets));
     }
 }

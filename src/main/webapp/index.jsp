@@ -24,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="A Project Factory for JavaEE"/>
     <meta name="keywords" content="java, javaee, tomee, openejb, jaxrs"/>
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#303030">
 
     <link rel="apple-touch-icon" sizes="57x57" href="<%= root %>/favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<%= root %>/favicon/apple-icon-60x60.png">
@@ -110,8 +110,7 @@
             'boostrapNotify': '../lib/bootstrap/bootstrap-notify.min',
             'jquery-cookie': '../lib/jquery/js.cookie',
             'bloodhound': '../lib/jquery/bloodhound.min',
-            'typeahead': '../lib/jquery/typeahead.jquery.min',
-            'FileSaver': '../lib/other/FileSaver.min'
+            'typeahead': '../lib/jquery/typeahead.jquery.min'
         },
         shim: {
             'VueRouter': ['Vue'],

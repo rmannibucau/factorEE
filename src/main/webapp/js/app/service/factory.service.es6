@@ -5,7 +5,8 @@ export default {
     getConfiguration(onSuccess, onError) {
         http.get(Constants.root + '/api/factory')
             .then(response => onSuccess(response.data), onError);
-    },
+    }
+    /*, commented cause no more used cause broken on safari
     generate(project, onSuccess, onError) { // needs binary format so don't use vue-resource
         var xhr = new XMLHttpRequest();
         xhr.responseType = "arraybuffer";
@@ -22,5 +23,5 @@ export default {
                 }
             }
         }
-    }
+    }*/
 };

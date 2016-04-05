@@ -18,12 +18,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(JavaEEFactory.Runner.class)
 public class ProjectFactoryResourceTest {
@@ -53,6 +56,35 @@ public class ProjectFactoryResourceTest {
                     new FactoryConfiguration.Facet("Arquillian", "Generates Arquillian test(s) with TomEE Remote.")
             ));
         }}, new HashMap<>(config.getFacets()));
+    }
+
+    @Test
+    public void getZip() throws IOException { // this is the same as POST but using a GEt as workaround for Safari
+        final Map<String, String> files = new HashMap<>();
+        try (final ZipInputStream stream = new ZipInputStream(blog.target().path("factory/zip")
+                .queryParam("buildType", "Maven")
+                .queryParam("facets", "JAX-RS")
+                .queryParam("facets", "Arquillian")
+                .queryParam("facets", "OpenJPA")
+                .queryParam("facets", "Lombok")
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept("application/zip")
+                .get(InputStream.class))) {
+            ZipEntry entry;
+            while ((entry = stream.getNextEntry()) != null) {
+                files.put(entry.getName(), new String(io.read(stream), StandardCharsets.UTF_8));
+            }
+        }
+
+        // impl reuse the POST one so should be fine, just check files are created as expected
+        // just a sanity check to ensure we generated a project matching facets
+        assertEquals(30, files.size());
+        Stream.of(
+                "application/src/main/java/com/application/jaxrs/HelloResource.java",
+                "application/src/test/resources/arquillian.xml",
+                "application/src/main/java/com/application/jpa/HelloEntity.java")
+                .forEach(path -> assertTrue(files.containsKey(path)));
+        assertTrue(files.get("application/pom.xml").contains("lombok"));
     }
 
     @Test

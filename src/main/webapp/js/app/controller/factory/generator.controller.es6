@@ -3,9 +3,9 @@ import template from "text!template/factory/generator.html";
 import FactoryService from "service/factory.service";
 import notifier from "util/notification";
 import $ from 'jquery';
+import Constants from "Constants";
 import 'typeahead';
 import 'bloodhound';
-import 'FileSaver';
 
 export default Vue.extend({
     template,
@@ -89,10 +89,26 @@ export default Vue.extend({
             // ensure javaVersion is a string otherwise it will likely be converted to a number and can fail on server side
             this.project.javaVersion = '' + this.project.javaVersion;
 
-            FactoryService.generate(
-                this.project,
-                stream => window.saveAs(new Blob([stream], {type: 'application/zip'}), (this.project.artifact || 'example') + '-' + (this.project.version || '0') + '.zip'),
-                () => notifier.error('Error', 'Can\'t create the project due to a server error.'));
+            // create a link and click on it using GET endpoint, FileSaver doesn't work on Safari
+            let a = document.createElement('a');
+            a.appendChild(document.createTextNode("Download zip"));
+            a.style = 'display: none;';
+            let link = Constants.root + '/api/factory/zip' +
+                '?buildType=' + encodeURIComponent(this.project.buildType) +
+                '&version=' + encodeURIComponent(this.project.version) +
+                '&group=' + encodeURIComponent(this.project.group) +
+                '&artifact=' + encodeURIComponent(this.project.artifact) +
+                '&name=' + encodeURIComponent(this.project.name) +
+                '&description=' + encodeURIComponent(this.project.description) +
+                '&packageBase=' + encodeURIComponent(this.project.packageBase) +
+                '&packaging=' + encodeURIComponent(this.project.packaging) +
+                '&javaVersion=' + encodeURIComponent(this.project.javaVersion);
+            $.each(this.project.facets, (idx, item) => link = link + '&facets=' + encodeURIComponent(item));
+            a.href = link;
+            a.download = (this.project.artifact || 'example') + '-' + (this.project.version || '0') + '.zip';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         },
         removeFacet(idx) {
             this.project.facets.splice(idx, 1);

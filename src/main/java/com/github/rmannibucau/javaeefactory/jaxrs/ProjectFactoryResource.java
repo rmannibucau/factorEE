@@ -13,10 +13,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
@@ -48,11 +51,42 @@ public class ProjectFactoryResource {
         configuration.getFacets().forEach((k, v) -> Collections.sort(v, (o1, o2) -> o1.getName().compareTo(o2.getName())));
     }
 
-    @POST
+    @POST // as a webservice it is easier to use
     @Produces("application/zip")
     @Consumes(MediaType.APPLICATION_JSON)
     public StreamingOutput create(final ProjectModel model) {
         return out -> generator.generate(toRequest(model), out);
+    }
+
+    @GET
+    @Path("zip")
+    @Produces("application/zip")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getZip(
+            @QueryParam("buildType") final String buildType,
+            @QueryParam("version") final String version,
+            @QueryParam("group") final String group,
+            @QueryParam("artifact") final String artifact,
+            @QueryParam("name") final String name,
+            @QueryParam("description") final String description,
+            @QueryParam("packageBase") final String packageBase,
+            @QueryParam("packaging") final String packaging,
+            @QueryParam("javaVersion") final String javaVersion,
+            @QueryParam("facets") final List<String> facets) {
+        final ProjectModel model = new ProjectModel();
+        model.setBuildType(buildType);
+        model.setVersion(version);
+        model.setGroup(group);
+        model.setArtifact(artifact);
+        model.setName(name);
+        model.setDescription(description);
+        model.setPackageBase(packageBase);
+        model.setPackaging(packaging);
+        model.setJavaVersion(javaVersion);
+        model.setFacets(ofNullable(facets).orElse(emptyList()));
+        return Response.ok((StreamingOutput) output -> generator.generate(toRequest(model), output))
+                .header("Content-Disposition", ofNullable(artifact).orElse("example") + '-' + ofNullable(version).orElse("0") + ".zip")
+                .build();
     }
 
     @GET

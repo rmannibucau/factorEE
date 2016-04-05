@@ -13,7 +13,6 @@
         'jquery-cookie': '../../../../src/main/webapp/js/lib/jquery/js.cookie',
         'bloodhound': '../../../../src/main/webapp/js/lib/jquery/bloodhound.min',
         'typeahead': '../../../../src/main/webapp/js/lib/jquery/typeahead.jquery.min',
-        'FileSaver': '../../../../src/main/webapp/js/lib/other/FileSaver.min',
         'jquery': 'empty:',
         'bootstrap': 'empty:',
         'Constants': 'empty:',
